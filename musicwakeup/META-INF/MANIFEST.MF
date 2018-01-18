@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Musicwakeup
+Bundle-SymbolicName: musicwakeup
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: hu.qgears.commons,
+ joptsimple;bundle-version="1.2.0"
