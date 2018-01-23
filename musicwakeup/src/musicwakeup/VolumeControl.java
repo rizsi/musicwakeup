@@ -93,9 +93,16 @@ public class VolumeControl {
 	public static void setVolume(int i) {
 		try {
 			System.out.println("Volume to: "+i);
-			ProcessBuilder pb=new ProcessBuilder("pactl", "set-sink-volume", "@DEFAULT_SINK@", ""+i+"%");
-			Process p=pb.start();
-			UtilProcess.streamOutputsOfProcess(p);
+			{
+				ProcessBuilder pb=new ProcessBuilder("pactl", "set-sink-mute", "@DEFAULT_SINK@", "0");
+				Process p=pb.start();
+				UtilProcess.streamOutputsOfProcess(p);
+			}
+			{
+				ProcessBuilder pb=new ProcessBuilder("pactl", "set-sink-volume", "@DEFAULT_SINK@", ""+i+"%");
+				Process p=pb.start();
+				UtilProcess.streamOutputsOfProcess(p);
+			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

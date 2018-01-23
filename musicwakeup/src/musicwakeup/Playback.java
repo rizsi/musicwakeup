@@ -39,7 +39,8 @@ public class Playback {
 							if(s.contains("application.process.binary")&&s.contains("\"vlc\""))
 							{
 								System.out.println("set volume of sink-input: "+number+" "+vol+"%");
-								new ProcessBuilder("pactl", "set-sink-input-volume", ""+number, ""+vol+"%").start();
+								UtilProcess.streamOutputsOfProcess(new ProcessBuilder("pactl", "set-sink-input-mute", ""+number, "0").start());
+								UtilProcess.streamOutputsOfProcess(new ProcessBuilder("pactl", "set-sink-input-volume", ""+number, ""+vol+"%").start());
 							}
 						}
 					} catch (Exception e) {
