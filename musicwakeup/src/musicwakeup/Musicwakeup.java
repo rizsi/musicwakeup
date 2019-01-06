@@ -23,6 +23,7 @@ import javax.swing.event.DocumentListener;
 import hu.qgears.commons.UtilFile;
 import hu.qgears.commons.UtilString;
 import joptsimple.annot.AnnotatedClass;
+import musicwakeup.ShutterControl.Commands;
 
 /**
  * Wake up on music program.
@@ -39,6 +40,7 @@ public class Musicwakeup extends JFrame {
 		public long wakeupTime;
 		public String wakeupString="9:00";
 		public String volumeControl="50,500:100";
+		public boolean disableArduinoShutterControl;
 		public String serialize() {
 			return "--playlist\n"+(playlist==null?"":playlist.getAbsolutePath())+"\n--wakeupTime\n"+wakeupTime+"\n--volumeControl\n"+volumeControl+"\n--wakeupString\n"+wakeupString+"";
 		}
@@ -82,6 +84,10 @@ public class Musicwakeup extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			if(shutterControl!=null)
+			{
+				shutterControl.iterateCommand(Commands.up, 5, 5000);
+			}
 		}
 		
 		public void stop()
@@ -97,7 +103,6 @@ public class Musicwakeup extends JFrame {
 		Runnable atend;
 		public Playback play(File playlist, Runnable atend) throws IOException
 		{
-			
 			return new Playback(atend).play(playlist);
 		}
 
@@ -299,6 +304,9 @@ public class Musicwakeup extends JFrame {
 		}
 		status=new JLabel();
 		add(status);
+		add(createShutterButton(ShutterControl.Commands.up));
+		add(createShutterButton(ShutterControl.Commands.stop));
+		add(createShutterButton(ShutterControl.Commands.down));
 		updateUI();
 		Timer timer = new Timer(5000, new ActionListener() {
 			@Override
@@ -307,7 +315,32 @@ public class Musicwakeup extends JFrame {
 			}
 		});
 		timer.start();
+		if(!args.disableArduinoShutterControl)
+		{
+			shutterControl=new ShutterControl();
+			shutterControl.start();
+		}
 	}
+	private JButton createShutterButton(Commands command) {
+		JButton b=new JButton("Shutter "+command);
+		b.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(shutterControl!=null)
+				{
+					try {
+						shutterControl.commandAsync(command);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		return b;
+	}
+	private ShutterControl shutterControl;
 	protected void volumeControlUpdated() {
 		try {
 			args.volumeControl=volumeControl.getText();

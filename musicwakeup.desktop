@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=MusicWakeUp
+GenericName=MusicWakeup
+Comment=Wake up play music program
+Exec=/usr/lib/jvm/default-java/bin/java -jar /home/rizsi/github/musicwakeup/bin/musicwakeup.jar autostart
+Icon=/usr/share/pixmaps/xubuntu-logo.png
+Terminal=false
+Type=Application
+Categories=
+
