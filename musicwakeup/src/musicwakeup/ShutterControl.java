@@ -12,9 +12,9 @@ import hu.qgears.commons.signal.SignalFutureWrapper;
 public class ShutterControl {
 	public static enum Commands
 	{
-		up('C'),down('A'), stop('B');
-		public final char c;
-		Commands(char c)
+		up("7A"),down("58"), stop("69");
+		public final String c;
+		Commands(String c)
 		{
 			this.c=c;
 		}
@@ -45,9 +45,18 @@ public class ShutterControl {
 			@Override
 			public void run() {
 				try {
-					os.write((byte)comm.c);
-					os.flush();
-					System.out.println("Shutter command sent: "+comm+" "+comm.c);
+					boolean first=true;
+					for(char c: comm.c.toCharArray())
+					{
+						if(!first)
+						{
+							Thread.sleep(510);
+						}
+						os.write((byte)c);
+						os.flush();
+						System.out.println("Shutter command sent: "+comm+" "+c);
+						first=false;
+					}
 					ret.ready(ShutterControl.this, null);
 				} catch (Exception e) {
 					ret.ready(ShutterControl.this, e);
