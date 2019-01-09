@@ -32,7 +32,7 @@ import musicwakeup.ShutterControl.Commands;
  */
 public class Musicwakeup extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private SimpleDateFormat df=new SimpleDateFormat("yyyy. M dd. HH:mm");
+	private SimpleDateFormat df=new SimpleDateFormat("yyyy. M. dd. HH:mm");
 	public WakeupArgs clargs=new WakeupArgs();
 	public class Args
 	{
